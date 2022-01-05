@@ -4,6 +4,8 @@ const studentController = require("../controllers/studentController.js");
 // router
 const router = require("express").Router();
 
+router.get("/search/roll/:roll", studentController.searchStudentWithRoll);
+
 router.get("/:id", studentController.getOneStudent);
 
 router.post("/", studentController.addStudent);

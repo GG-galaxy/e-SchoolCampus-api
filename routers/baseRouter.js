@@ -1,4 +1,5 @@
 // import controllers
+var authRouter = require("./authRouter");
 var studentRouter = require("./studentRouter");
 var teacherRouter = require("./teacherRouter");
 var parentRouter = require("./parentRouter");
@@ -15,6 +16,8 @@ const router = require("express").Router();
 router.get("/", (req, res) => {
   res.send("Server is Running");
 });
+
+router.use("/auth", authRouter);
 
 router.use("/student", studentRouter);
 

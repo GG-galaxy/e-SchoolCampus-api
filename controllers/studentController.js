@@ -1,4 +1,6 @@
 const db = require("../models");
+const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 
 // create main Model
 const Student = db.students;
@@ -49,8 +51,7 @@ const getOneStudent = async (req, res) => {
   let student = null;
 
   try {
-    student = await Student.findOne({
-      where: { id: id },
+    student = await Student.findByPk(id, {
       include: [{ model: Batch }, { model: Parent }],
     });
   } catch (err) {
@@ -162,9 +163,47 @@ const deleteStudent = async (req, res) => {
   });
 };
 
+// 6. search student with rollno
+
+const searchStudentWithRoll = async (req, res) => {
+  let studentRollNo = req.params.roll;
+  let students = null;
+
+  try {
+    students = await Student.findAll({
+      where: { rollNo: { [Op.like]: "%" + studentRollNo + "%" } },
+      include: [{ model: Batch }, { model: Parent }],
+    });
+  } catch (err) {
+    console.log("Error: ", err);
+    res.send({
+      success: false,
+      code: 400,
+      message: err.message,
+    });
+
+    return;
+  }
+
+  if (students && students?.length > 0) {
+    res.status(200).send({
+      success: true,
+      code: 200,
+      data: students,
+    });
+  } else {
+    res.status(200).send({
+      success: false,
+      code: 200,
+      message: "Not found!",
+    });
+  }
+};
+
 module.exports = {
   addStudent,
   getOneStudent,
   updateStudent,
   deleteStudent,
+  searchStudentWithRoll,
 };

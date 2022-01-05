@@ -45,7 +45,7 @@ const getOneTeacher = async (req, res) => {
   let teacher = null;
 
   try {
-    teacher = await Teacher.findOne({ where: { id: id } });
+    teacher = await Teacher.findByPk(id);
   } catch (err) {
     console.log("Error: ", err);
     res.send({

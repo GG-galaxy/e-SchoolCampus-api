@@ -173,7 +173,7 @@ const getAllBatches = async (req, res) => {
     return;
   }
 
-  if (batches) {
+  if (batches && batches?.length > 0) {
     res.status(200).send({
       success: true,
       code: 200,

@@ -11,7 +11,6 @@ const Student = db.students;
 
 const addParent = async (req, res) => {
   const data = req.body;
-  console.log("Req info : ", data);
 
   let info = {
     id: data.id,
@@ -19,26 +18,9 @@ const addParent = async (req, res) => {
     email: data.email,
     address: data.address,
     contact: data.contact,
+    studentId: data.studentId,
   };
 
-  const studentRollNo = req.body.rollNo;
-  let student = null;
-  if (studentRollNo)
-    student = await Student.findOne({ where: { rollNo: studentRollNo } });
-
-  if (student) {
-    info.studentId = student.id;
-  } else {
-    res.send({
-      success: false,
-      code: 400,
-      message: "Invalid roll number!",
-    });
-
-    return;
-  }
-
-  console.log("Parent info : ", info);
   let parent = null;
   try {
     parent = await Parent.create(info);
@@ -66,8 +48,7 @@ const getOneParent = async (req, res) => {
   let parent = null;
 
   try {
-    parent = await Parent.findOne({
-      where: { id: id },
+    parent = await Parent.findByPk(id, {
       include: [{ model: Student }],
     });
   } catch (err) {

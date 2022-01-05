@@ -45,7 +45,7 @@ const getOneAdmin = async (req, res) => {
   let admin = null;
 
   try {
-    admin = await Admin.findOne({ where: { id: id } });
+    admin = await Admin.findByPk(id);
   } catch (err) {
     console.log("Error: ", err);
     res.send({
